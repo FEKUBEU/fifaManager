@@ -23,43 +23,20 @@ void createTeam(void){
     printline('-',strlen("Erfassung einer neuen Mannschaft"));
 
 
-    if(TeamCounter == MAXTEAM)
+    if(TeamCounter >= MAXTEAM)
+    {
         return;
-
-    TTeam *newTeam = &(Teams[TeamCounter]);
-
-    newTeam=malloc(sizeof(TTeam));
-
+        printf("MAXTEAM wurde überschritten\n");
+    }
     printf("Teamcounter: %i\n", TeamCounter);
 
-    //printf("%i",newTeam->AnzPlayer);
-
     //Teamname
-    do{} while( !getText("Teamname: ", 25, &(Teams[TeamCounter].Teamn), 0 ) );
-
-    //printf("Teamnametest: %i\n", *(Teams+TeamCounter) );        // schmiert ab !!!!!
-    //printf("Teamnametest: %i\n", Teams+TeamCounter);
-    //printf("Teamnametest: %i\n", *newTeam );
-    //printf("Teamnametest: %i\n", newTeam );
-    //printf("%s", newTeam->Teamn);
-    //printf("Teamname Test: %s\n", (Teams[1].Teamn));
-    //printf("Teamname Test: %s\n", (Teams[TeamCounter].Teamn));
-    //printf("Teamname Test: %s\n", *(Teams[TeamCounter].Teamn));     // schmiert ab
-
+    do{} while( !getText("Teamname: ", 25, &((Teams+TeamCounter)->Teamn), 0 ) );
+    printf("test:%s\n",(Teams+TeamCounter)->Teamn);
     //trainername
-    do{} while( !getText("Trainername: ", 25, &(Teams[TeamCounter].Coach), 1 ) );
+    do{} while( !getText("Trainername: ", 25, &((Teams+TeamCounter)->Coach), 1 ) );
+    printf("test:%s\n",(Teams+TeamCounter)->Teamn);
 
-    //printf("Teamname Test: %s\n", (Teams[1].Coach));
-    //printf("Teamname Test: %s\n", (Teams[TeamCounter].Coach));
-
-    //anzahl spieler
-    (Teams[TeamCounter]).AnzPlayer = 0;
-
-    //TeamCounter++;
-
-    printf("Bitte Eingaben mit Enter bestaetigen!\n");
-    WaitForEnter();
-    free(newTeam);
     do
     {
         TPlayer *newPlayer = (Teams[TeamCounter].Player);
@@ -71,8 +48,8 @@ void createTeam(void){
         }
         else
         {
-            addPlayer();
-            Teams[TeamCounter].AnzPlayer++;
+
+            addPlayer(1);       //1 für nicht nachfragen ob der spieler einem bestehendem team hinzugefügt werden soll
             printf("Teamcounter: %i\n", TeamCounter);
             printf("Anzahl d. Spieler: %i\n", Teams[TeamCounter].AnzPlayer);
         }
@@ -86,44 +63,59 @@ void deleteTeam(void)
     printf("deleteTeam\n");
 }
 
-void addPlayer(void)
+void addPlayer(int hinzu)
 {
     clearScreen();
     //MenuTitel
     printf("Erfassung eines neuen Spielers\n");
     printline('-',strlen("Erfassung eines neuen Spielers"));
 
-    if(askYesorNo("Wollen sie einem bestehendem Team einen Spieler hinzufuegen"))
+    if(hinzu==0)
     {
-
-        TMTitel ArrMTeams[TeamCounter];
-        char MenuT[]={"Angelegte Teams"};
-        int i;
-
-        for(i=0;i<TeamCounter;i++)
+        if(askYesorNo("Wollen sie einem bestehendem Team einen Spieler hinzufuegen"))
         {
-            strcpy(ArrMTeams[i].MTitel,(Teams+i)->Teamn);
+
+            TMTitel ArrMTeams[TeamCounter];
+            char MenuT[]={"Angelegte Teams"};
+            int i;
+
+            for(i=0;i<TeamCounter;i++)
+            {
+                strcpy(ArrMTeams[i].MTitel,(Teams+i)->Teamn);
+            }
+
+            int TC = ( getmenu(MenuT,ArrMTeams,TeamCounter) );
+
+            int AnzPlayer = (Teams+TC)->AnzPlayer;
+
+            //Spielername
+            do{} while( !getText("Spielername: ",30, &( (((Teams+TC)->Player)+AnzPlayer)->Playern), 0 ) ) ;
+            printf("%s\n",(((Teams+TC)->Player)+AnzPlayer)->Playern);
+            //Birthday
+
+            //Trikonummer
+
+            //Goals
+
+
+            ((Teams+TC)->AnzPlayer)++;
         }
 
-        int TC = ( getmenu(MenuT,ArrMTeams,TeamCounter) );
-
-        ((Teams+TC)->AnzPlayer)++;
-        int AnzPlayer = (Teams+TC)->AnzPlayer;
+    }
+    else
+    {
+        int AnzPlayer = (Teams+TeamCounter)->AnzPlayer;
 
         //Spielername
-        do{} while( !getText("Spielername: ",30, &( (((Teams+TC)->Player)+AnzPlayer)->Playern), 0 ) ) ;
-        printf("%s\n",(((Teams+TC)->Player)+AnzPlayer)->Playern);
+        do{} while( !getText("Spielername: ",30, &( (((Teams+TeamCounter)->Player)+AnzPlayer)->Playern), 0 ) ) ;
+        printf("%s\n",(((Teams+TeamCounter)->Player)+AnzPlayer)->Playern);
         //Birthday
 
         //Trikonummer
 
         //Goals
 
-
-    }
-    else
-    {
-        createTeam();
+        Teams[TeamCounter].AnzPlayer++;
     }
 
 }
@@ -176,6 +168,7 @@ void listOneTeam(int TC)
     {
         listOnePlayer(j, TC);
     }
+    printf("<-------------------Team: %i\n\n",TC+1);
 }
 
 void listOnePlayer(int PC, int TC)
@@ -195,10 +188,40 @@ void listOnePlayer(int PC, int TC)
 
     //Goals
     //printf("  Goals: %i\n",(((Teams+TC)->Player)+PC)->Goals);
+    printf("  <-------------------Player: %i\n\n",PC+1);
 
 }
 
+
+
+
 void endprog(void){
+    if(askYesorNo("wollen sie ihre werte speichern ?"))
+    {
+        FILE *Datei2= fopen("save2.txt", "w");
+        if(Datei2)
+        {
+            save(Datei2);
+        }
+        else
+        {
+            printf("ERROR: datei2 konnte nicht geoffnet werden\n");
+            return;
+        }
+
+        fclose(Datei2);
+
+        printf("Werte wurden gespeichert\n");
+
+    }
+    else
+    {
+        int i;
+        for(i=0;i<TeamCounter;i++)
+        {
+            free(Teams+i);
+        }
+    }
     printf("Programmende\n");
 }
 

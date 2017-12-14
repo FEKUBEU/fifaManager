@@ -125,8 +125,6 @@ int getText(char *prompt, int maxLen, char **Text, int allowEmpty)
         *Text = NULL;
         Input = calloc(maxLen+1, sizeof(char));
 
-        printf("test");
-
         if(Input)
         {
             sprintf(Format, "%%%i[^\n]", maxLen);
