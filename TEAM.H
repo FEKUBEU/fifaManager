@@ -8,16 +8,17 @@
 void createTeam(void);
 void deleteTeam(void);
 
-void addPlayer(void);
+void addPlayer(int);
 void deletePlayer(void);
 
 void searchPlayer(void);
 
-void sortTeams(void);
+
 
 void listTeams(void);
 void listOneTeam(int);
 void listOnePlayer(int, int);
+
 
 void endprog(void);
 

@@ -70,7 +70,7 @@ int isdatevalid(TDate today)
 
 //Übergibt einer Tplayer datei ein geburtsdatum aus einem eingegebenen String
 
-int getDate(char eingabeAufruf[], int optional)
+int getDate(char eingabeAufruf[], int optional , int TC , int AP)
 {
     //printf("TEST!!999!!\n");
     char strdate[25];
@@ -136,24 +136,13 @@ int getDate(char eingabeAufruf[], int optional)
 
         if(isdatevalid( *today )==1)           //testet ob valid ist und übergibt an
         {
-            // unsere struct
-            //TDate *birthday;
 
-            //birthday = malloc(sizeof(TDate));
+            (((Teams+TC)->Player)+AP)->Birthday = today;
 
-            int AnzPlayer = (Teams[TeamCounter].AnzPlayer);
+            (((Teams+TC)->Player)+AP)->Birthday->Day   = today->Day;
+            (((Teams+TC)->Player)+AP)->Birthday->Month = today->Month;
+            (((Teams+TC)->Player)+AP)->Birthday->Year  = today->Year;
 
-            (Teams[TeamCounter]).Player[AnzPlayer].Birthday = today;
-
-            (Teams[TeamCounter]).Player[AnzPlayer].Birthday->Day   = today->Day;
-            (Teams[TeamCounter]).Player[AnzPlayer].Birthday->Month = today->Month;
-            (Teams[TeamCounter]).Player[AnzPlayer].Birthday->Year  = today->Year;
-
-
-            //printDate(today);
-            //printDate( (Teams[TeamCounter]).Player[AnzPlayer].Birthday );
-            //printDate( (Teams[TeamCounter]).Player[AnzPlayer-1].Birthday );
-            //free(today);
             return 1;
 
         }

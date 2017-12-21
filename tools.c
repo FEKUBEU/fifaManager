@@ -8,15 +8,14 @@ void clearScreen(void)
 
 int askYesorNo(char strQuestion[])
 {
-    clearBuffer();
     char Input;
-
     do{
+        clearBuffer();
 
         printf("%s\n",strQuestion);
 
         scanf("%c",&Input);
-        clearBuffer();
+
 
 
         if(Input=='y'||Input=='Y'||Input=='j'||Input=='J')
@@ -78,7 +77,6 @@ int getNumber(char eingabeAufruf[],int optional,int *PStruct, int von, int bis)
     //einlesen
     int eingabe = 0;
     scanf("%i[^\n]", &eingabe);
-    clearBuffer();
     //auf Inhalt testen und optionalität
     if( (!optional)&&(!eingabe) )
     {                     //optional=1 für optional
@@ -125,8 +123,6 @@ int getText(char *prompt, int maxLen, char **Text, int allowEmpty)
         *Text = NULL;
         Input = calloc(maxLen+1, sizeof(char));
 
-        printf("test");
-
         if(Input)
         {
             sprintf(Format, "%%%i[^\n]", maxLen);
@@ -165,6 +161,7 @@ int getText(char *prompt, int maxLen, char **Text, int allowEmpty)
             free(Input);
             return 1;
         }
+        return 0;
 }
 
 

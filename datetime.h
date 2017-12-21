@@ -8,7 +8,7 @@
 
 int isleapyear(TDate);
 int isdatevalid(TDate);
-int getDate(char [], int );
+int getDate(char [], int , int , int);
 void printDate(TDate*);
 
 #endif // DATETIME_H_INCLUDED

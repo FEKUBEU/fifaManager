@@ -454,7 +454,7 @@ savePlayer(FILE *data, int TC , int PC)
 saveTeam(FILE *data,int TC)
 {
     int i;
-    int anzPlayer = (Teams+TC)->AnzPlayer;
+
     fputs("  ",data);
     fputs("<Team>\n",data);
 
@@ -472,6 +472,7 @@ saveTeam(FILE *data,int TC)
     fputs("\n",data);
     free( (Teams+TC)->Coach );
 
+    int anzPlayer = (Teams+TC)->AnzPlayer;
 
     for(i=0;i<anzPlayer;i++)
     {

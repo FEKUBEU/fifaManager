@@ -9,12 +9,12 @@
 #include "database.h"
 #define NULL 0
 
-
 int main()
 {
 
+FILE *Datei = fopen("test.txt", "r");
 
-    FILE *Datei = fopen("test.txt", "r");
+
 
     if(Datei)
     {
@@ -24,7 +24,7 @@ int main()
     {
         printf("ERROR: datei konnte nicht geoffnet werden\n");
     }
-
+    fclose(Datei);
 
     //------------Mannschaften-Verwaltung-----------------------//
 
@@ -77,7 +77,7 @@ int main()
                     }
                     else
                     {
-                        addPlayer();
+                        addPlayer(0);
                     }
 
                     free(newPlayer);
@@ -104,24 +104,12 @@ int main()
 
             case 7: endprog();ok=1;   break;
 
+
+
             default:printf("ERROR:Menuauswahl\n") ; break;
             }
     }while(!ok);
-
-    FILE *Datei2= fopen("save2.txt", "w");
-    if(Datei2)
-    {
-
-        save(Datei2);
-    }
-    else
-    {
-        printf("ERROR: datei2 konnte nicht geoffnet werden\n");
-    }
-
-    fclose(Datei2);
-    fclose(Datei);
-    return 0;
+ return 0;
 }
 
 
