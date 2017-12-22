@@ -72,6 +72,7 @@ void chomp(char *str)       // KOPIERTE FUNKTION !!!!
 
 int getNumber(char eingabeAufruf[],int optional,int *PStruct, int von, int bis)
 {
+    clearBuffer();
     //eingabe
     printf("%s: ", eingabeAufruf);
     //einlesen
@@ -98,6 +99,7 @@ int getNumber(char eingabeAufruf[],int optional,int *PStruct, int von, int bis)
         return 0;
     }
 
+    PStruct  = calloc(2,sizeof(int));
     //kopieren der eingabe
     *PStruct = eingabe;
 

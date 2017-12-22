@@ -24,11 +24,5 @@
     <TricotNr>14</TricotNr>
     <Goals>2</Goals>
     </Player>
-    <Player>
-    <Name>test</Name>
-    <Birthday>18.9.1996</Birthday>
-    <TricotNr>12</TricotNr>
-    <Goals>12</Goals>
-    </Player>
   </Team>
 </Daten>

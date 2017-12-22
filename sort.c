@@ -8,11 +8,53 @@
 #include "datastruct.h"
 #include "sort.h"
 
-int compare(int *value1 , int *value2)
+int compareGoal(Tplayer *player1 , Tplayer  *player2)
 {
-    return(*value1 - *value2);
+    int Goal1 = player1->Goal;
+    int Goal2 = player2->Goal;
+
+    return(Goal1 - Goal2);
 }
 
+int compareTrikot(Tplayer *player1 , Tplayer  *player2)
+{
+    int Trikot1 = player1->Trikotn;
+    int Trikot2 = player2->Trikotn;
+
+    return(Trikot1 - Trikot2);
+}
+
+
+int compareName(Tplayer *player1 , Tplayer  *player2)
+{
+    char * name1 = player1->PLayern;
+    char * name2 = player2->PLayern;
+
+    return(name1 - name2);
+}
+
+
+void sort(void)
+{
+
+    int value1;
+    int value2;
+    int Erg;
+    int TC; //Teamcounter
+    int PC; //Playercounter
+    for(TC=0;TC<TeamCounter;TC++)
+    {
+        int AnzPlayer = (Teams+TeamCounter)->AnzPlayer;
+
+        for(PC=1;PC<AnzPlayer;PC++)
+        {
+
+
+        }
+    }
+
+
+}
 
 
 void sortTeams(void)
@@ -37,36 +79,7 @@ void sortTeams(void)
 
         switch(eingabe)
         {
-            case 0:
-                    int Goal;
-                    int GoalNext;
-                    int Erg;
-                    int i;
-                    int x;
-                    for(i=0;i<TeamCounter;i++)
-                    {
-                        int AnzPlayer = (Teams+TeamCounter)->AnzPlayer;
-
-                        for(x=1;x<AnzPlayer;x++)
-                        {
-                            Goal = (((Teams+i)->Player)+(x-1))->Goals;
-                            GoalNext = (((Teams+i)->Player)+x)->Goals;
-
-                            (int *cmp) (int*,int*) = compare;
-
-                            Erg = cmp(Goal,GoalNext);
-
-                            int ZS;
-
-                            if(Erg == 0)
-
-
-
-
-                        }
-                    }
-
-                    break;
+            case 0: sort(); break;
 
             case 1: break;
 
@@ -74,7 +87,7 @@ void sortTeams(void)
 
             case 3: ok=1; break;
 
-            default:printf("ERROR:Menuauswahl\n") ; break;
+            default:printf("ERROR: sort.c Menuauswahl\n") ; break;
         }
     }while(!ok);
 }

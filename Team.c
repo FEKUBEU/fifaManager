@@ -83,15 +83,12 @@ void addPlayer(int hinzu)
             int AnzPlayer = (Teams+TC)->AnzPlayer;
 
             //Spielername
-            (((Teams+TC)->Player)+AnzPlayer)->Playern = calloc(30,sizeof(char));
-            do{} while( !getText("Spielername: ",30, &( (((Teams+TC)->Player)+AnzPlayer)->Playern), 0 ) ) ;
+            getText("Spielername: ",30, &( (((Teams+TC)->Player)+AnzPlayer)->Playern), 0 );
             //Birthday
             getDate("Geburtstag",0, TC , AnzPlayer);
             //Trikonummer
-            (((Teams+TC)->Player)+AnzPlayer)->Trikotn  = calloc(10,sizeof(int));
             getNumber("Trikotnummer: ",1,&((((Teams+TC)->Player)+AnzPlayer)->Trikotn),0,99);
             //Goals
-            (((Teams+TC)->Player)+AnzPlayer)->Goals    = calloc(10,sizeof(int));
             getNumber("Goals: ",1,&((((Teams+TC)->Player)+AnzPlayer)->Goals),0,99);
 
             ((Teams+TC)->AnzPlayer)++;
@@ -107,15 +104,12 @@ void addPlayer(int hinzu)
         int AnzPlayer = (Teams+TeamCounter)->AnzPlayer;
 
         //Spielername
-        (((Teams+TeamCounter)->Player)+AnzPlayer)->Playern = calloc(30,sizeof(char));
         getText("Spielername: ",30, &( (((Teams+TeamCounter)->Player)+AnzPlayer)->Playern),0);
         //Birthday
         getDate("Geburtstag",0, TeamCounter , AnzPlayer);
         //Trikonummer
-        (((Teams+TeamCounter)->Player)+AnzPlayer)->Trikotn  = calloc(10,sizeof(int));
         getNumber("Trikotnummer: ",1,&((((Teams+TeamCounter)->Player)+AnzPlayer)->Trikotn),0,99);
         //Goals
-        (((Teams+TeamCounter)->Player)+AnzPlayer)->Goals    = calloc(10,sizeof(int));
         getNumber("Goals: ",1,&((((Teams+TeamCounter)->Player)+AnzPlayer)->Goals),0,99);
 
         ((Teams+TeamCounter)->AnzPlayer)++;
@@ -167,7 +161,7 @@ void listOneTeam(int TC)
     {
         listOnePlayer(j, TC);
     }
-    printf("<-------------------Team: %i\n\n",TC+1);
+
 }
 
 void listOnePlayer(int PC, int TC)
@@ -187,7 +181,6 @@ void listOnePlayer(int PC, int TC)
 
     //Goals
     printf("  Goals: %i\n",(((Teams+TC)->Player)+PC)->Goals);
-    printf("  <-------------------Player: %i\n\n",PC+1);
 
 }
 
