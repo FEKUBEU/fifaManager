@@ -10,13 +10,13 @@ int askYesorNo(char strQuestion[])
 {
     char Input;
     do{
-        clearBuffer();
+
 
         printf("%s\n",strQuestion);
 
         scanf("%c",&Input);
 
-
+        clearBuffer();
 
         if(Input=='y'||Input=='Y'||Input=='j'||Input=='J')
         return 1;
@@ -58,9 +58,6 @@ void WaitForEnter(void){
     char enter;
     scanf("%[^\n]",&enter);
     clearBuffer();
-
-
-
 }
 
 void chomp(char *str)       // KOPIERTE FUNKTION !!!!
@@ -70,44 +67,62 @@ void chomp(char *str)       // KOPIERTE FUNKTION !!!!
    str[p-1]='\0';
 }
 
-int getNumber(char eingabeAufruf[],int optional,int *PStruct, int von, int bis)
+int getNumber(char *eingabeAufruf,int optional,int **PStruct, int von, int bis)
 {
-    clearBuffer();
-    //eingabe
-    printf("%s: ", eingabeAufruf);
-    //einlesen
-    int eingabe = 0;
-    scanf("%i[^\n]", &eingabe);
-    //auf Inhalt testen und optionalität
-    if( (!optional)&&(!eingabe) )
-    {                     //optional=1 für optional
-        do                //optional=0 für nicht optional
+        char *Input;
+        char Format[30];
+        int scanErg;
+        int len;
+
+
+        if(PStruct == NULL)
+            return 0;
+
+        *PStruct = NULL;
+        Input = calloc(4, sizeof(int));
+
+        if(Input)
         {
-            printf("Nicht korrekte Eingabe in Kategorie: %s \n", eingabeAufruf);
-            scanf("%i", &eingabe);
-            clearBuffer();
-        } while( !(eingabe) );
-    }
+            sprintf(Format, "%%%i[^\n]", 4);
 
-    //in int umwandeln
-    //int eingabe = atoi(pchar);
-
-    //testen auf bereich von-bis
-    if( (eingabe>bis) || (eingabe<von) )
-    {
-        printf("Eingabe für %s nicht zwischen %i und %i\n", eingabeAufruf, von, bis);
+            do
+            {
+                printf("%s", eingabeAufruf);
+                scanErg = scanf(Format, Input);
+                clearBuffer();
+                len = strlen(Input);
+                if(len>0)
+                {
+                    *PStruct = malloc( (len+1)*sizeof(int) );
+                    // prüfen ob reserviert:
+                    if(PStruct)
+                    {
+                        int test = 0;
+                        test = atoi(Input);
+                        printf("%i\n", test);
+                        *PStruct = test;
+                    }
+                    else
+                    {
+                        free(Input);
+                        return 0;
+                    }
+                }
+                else
+                {
+                    if(optional)
+                    {
+                        free(Input);
+                        return 1;
+                    }
+                    else
+                        scanErg = 0;
+                }
+            } while(scanErg==0);
+            free(Input);
+            return 1;
+        }
         return 0;
-    }
-
-    PStruct  = calloc(2,sizeof(int));
-    //kopieren der eingabe
-    *PStruct = eingabe;
-
-    //Testen
-    //printf("Ihre Eingabe: %i\n", *PStruct);
-
-    return 1;
-
 }
 
 int getText(char *prompt, int maxLen, char **Text, int allowEmpty)

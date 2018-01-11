@@ -8,15 +8,15 @@
 #include "datastruct.h"
 #include "sort.h"
 
-int compareGoal(Tplayer *player1 , Tplayer  *player2)
+int compareGoal(TPlayer *player1 , TPlayer  *player2)
 {
-    int Goal1 = player1->Goal;
-    int Goal2 = player2->Goal;
+    int Goal1 = player1->Goals;
+    int Goal2 = player2->Goals;
 
     return(Goal1 - Goal2);
 }
 
-int compareTrikot(Tplayer *player1 , Tplayer  *player2)
+int compareTrikot(TPlayer *player1 , TPlayer  *player2)
 {
     int Trikot1 = player1->Trikotn;
     int Trikot2 = player2->Trikotn;
@@ -25,10 +25,12 @@ int compareTrikot(Tplayer *player1 , Tplayer  *player2)
 }
 
 
-int compareName(Tplayer *player1 , Tplayer  *player2)
+int compareName(TPlayer *player1 , TPlayer  *player2)
 {
-    char * name1 = player1->PLayern;
-    char * name2 = player2->PLayern;
+    char * name1 = player1->Playern;
+    char * name2 = player2->Playern;
+
+    printf("name 1 = %s \n nmame2 = %s \n erg = %i \n",name1,name2,(name1-name2));
 
     return(name1 - name2);
 }

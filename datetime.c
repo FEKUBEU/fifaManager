@@ -80,8 +80,8 @@ int getDate(char eingabeAufruf[], int optional , int TC , int AP)
     char *pmonth  =  NULL;
     char *pyear   =  NULL;
 
-    clearBuffer();
-    printf("%s: ", eingabeAufruf);
+
+    printf("%s", eingabeAufruf);
     //scanf("%s", strdate);
     fgets(strdate, 25, stdin);
     //clearBuffer();
@@ -91,14 +91,22 @@ int getDate(char eingabeAufruf[], int optional , int TC , int AP)
             return 1;
     }
 
-    if( (!optional)&&( *strdate == '\n') )
-    {                     //optional=1 für optional //optional=0 für nicht optional
-        //printf("NICHT OPTIONAL!\n");
-            printf("Nicht korrekte Eingabe in Kategorie: %s \n",eingabeAufruf);
-            return 0;
-    }
-    else
+
+
+    if((!optional)&&( *strdate == '\n'))
     {
+        do
+        {
+              printf("Nicht korrekte Eingabe\n");
+              printf("%s", eingabeAufruf);
+              //scanf("%s", strdate);
+              fgets(strdate, 25, stdin);
+
+        }while((!optional)&&( *strdate == '\n'));
+
+    }
+
+
         //int count=0;
         int i=0;
         int count = 0;
@@ -152,7 +160,7 @@ int getDate(char eingabeAufruf[], int optional , int TC , int AP)
             printf("Eingabe ungueltig!\n");
             return 0;
         }
-    }
+
 
 
 }

@@ -81,17 +81,21 @@ void addPlayer(int hinzu)
             int TC = ( getmenu(MenuT,ArrMTeams,TeamCounter) );
 
             int AnzPlayer = (Teams+TC)->AnzPlayer;
+            if(AnzPlayer>=MAXPLAYER)
+                printf("dieses Team ist voll\n");
+            else
+            {
+                //Spielername
+                getText("Spielername: ",30, &( (((Teams+TC)->Player)+AnzPlayer)->Playern), 0 );
+                //Birthday
+                do{}while(!getDate("Geburtstag: ",0, TC , AnzPlayer));
+                //Trikonummer
+                getNumber("Trikotnummer: ",1,&((((Teams+TC)->Player)+AnzPlayer)->Trikotn),0,99);
+                //Goals
+                getNumber("Goals: ",1,&((((Teams+TC)->Player)+AnzPlayer)->Goals),0,99);
 
-            //Spielername
-            getText("Spielername: ",30, &( (((Teams+TC)->Player)+AnzPlayer)->Playern), 0 );
-            //Birthday
-            getDate("Geburtstag",0, TC , AnzPlayer);
-            //Trikonummer
-            getNumber("Trikotnummer: ",1,&((((Teams+TC)->Player)+AnzPlayer)->Trikotn),0,99);
-            //Goals
-            getNumber("Goals: ",1,&((((Teams+TC)->Player)+AnzPlayer)->Goals),0,99);
-
-            ((Teams+TC)->AnzPlayer)++;
+                ((Teams+TC)->AnzPlayer)++;
+            }
         }
         else
         {
@@ -106,11 +110,11 @@ void addPlayer(int hinzu)
         //Spielername
         getText("Spielername: ",30, &( (((Teams+TeamCounter)->Player)+AnzPlayer)->Playern),0);
         //Birthday
-        getDate("Geburtstag",0, TeamCounter , AnzPlayer);
+        getDate("Geburtstag: ",0, TeamCounter , AnzPlayer);
         //Trikonummer
         getNumber("Trikotnummer: ",1,&((((Teams+TeamCounter)->Player)+AnzPlayer)->Trikotn),0,99);
         //Goals
-        getNumber("Goals: ",1,&((((Teams+TeamCounter)->Player)+AnzPlayer)->Goals),0,99);
+        getNumber("Goals: ",1,&((((Teams+TeamCounter)->Player)+AnzPlayer)->Goals),0,999);
 
         ((Teams+TeamCounter)->AnzPlayer)++;
     }
@@ -185,7 +189,21 @@ void listOnePlayer(int PC, int TC)
 }
 
 
+void freeOnePlayer(TPlayer *Player)
+{
+    free(Player->Playern);
+    free(Player->Birthday);
+}
 
+void freeOneTeam(TTeam *Team)
+{
+    int i;
+
+    free(Team->Teamn);
+    free(Team->Coach);
+    for (i = 0; i < Team->AnzPlayer; i++)
+        freeOnePlayer(Team->Player + i);
+}
 
 void endprog(void){
     if(askYesorNo("wollen sie ihre werte speichern ?"))
@@ -206,14 +224,14 @@ void endprog(void){
         printf("Werte wurden gespeichert\n");
 
     }
-    else
+
+
+    int i;
+    for(i = 0; i < TeamCounter; i++)
     {
-        int i;
-        for(i=0;i<TeamCounter;i++)
-        {
-            free(Teams+i);
-        }
+        freeOneTeam(Teams + i);
     }
+
     printf("Programmende\n");
 }
 

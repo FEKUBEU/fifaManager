@@ -1,4 +1,11 @@
+#include "datastruct.h"
+#include "Team.h"
+#include "tools.h"
 #include "menu.h"
+#include "datetime.h"
+#include "database.h"
+
+
 
 
 
@@ -8,7 +15,7 @@ int eingabe;
 int OK=0;
     do{
 
-        clearScreen();  // aus Tools löscht Bildschirm
+       clearScreen();  // aus Tools löscht Bildschirm
 
         printf("%s\n",Menutitel);
         printline('-',30);

@@ -7,12 +7,13 @@
 #include "menu.h"
 #include "datetime.h"
 #include "database.h"
-#define NULL 0
+#include "sort.h"
+//#define NULL 0
 
 int main()
 {
 
-FILE *Datei = fopen("test.txt", "r");
+FILE *Datei = fopen("teams.xml", "r");
 
 
 
@@ -59,8 +60,7 @@ FILE *Datei = fopen("test.txt", "r");
         switch(eingabe) {
             case 0:
 
-                    createTeam();
-                    WaitForEnter(); break;
+                    createTeam(); break;
 
             case 1:
 

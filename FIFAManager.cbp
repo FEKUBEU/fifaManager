@@ -44,6 +44,7 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="datetime.h" />
+		<Unit filename="list.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>

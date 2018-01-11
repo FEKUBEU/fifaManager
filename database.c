@@ -3,7 +3,7 @@
 #include <string.h>
 #include "tools.h"
 #include "datetime.h"
-#define NULL 0
+//#define NULL 0
 
 //------------------------------Deklarationen
 
@@ -17,7 +17,7 @@ char * scanZeilenanfang(char Zeile[MAXZEICHEN],char *Zeilenanfang,FILE *data)
 {
     Zeilenanfang = Zeile;
 
-    while( ( *Zeilenanfang == ' ' ) || ( *Zeilenanfang == 9 ) || ( *Zeilenanfang == '/n' ) )
+    while( ( *Zeilenanfang == ' ' ) || ( *Zeilenanfang == 9 ) || ( *Zeilenanfang == '\n' ) )
     {
         Zeilenanfang++;
 
@@ -62,11 +62,16 @@ void loadPlayer(FILE *data,char *Zeilenanfang)
     printf("    ");//leerzeichen für Player
     printf("------------------------>PLAYER %i\n",anzPlayer+1);
 
-
-    if(anzPlayer >= MAXTEAM)
+    if(anzPlayer >= MAXPLAYER)
     {
         printf("    ");//leerzeichen für Player
         printf("ERROR: MAXPLAYER: %i anzPlayer: %i\n",MAXPLAYER,anzPlayer);
+        do
+        {
+            fgets(Zeile,100,data);
+            delete_newline(Zeile);
+            Zeilenanfang = scanZeilenanfang(Zeile,Zeilenanfang,data);
+        }while(strncmp(Zeilenanfang,"</Player>",9)!=0);
         return;
     }
 
@@ -128,9 +133,9 @@ void loadPlayer(FILE *data,char *Zeilenanfang)
                         Date->Month  = strtok(NULL, delimiter);
                         Date->Year   = strtok(NULL, delimiter);
 
-                        Date->Day=atoi(Date->Day);
-                        Date->Month=atoi(Date->Month);
-                        Date->Year=atoi(Date->Year);
+                        Date->Day   = atoi(Date->Day);
+                        Date->Month = atoi(Date->Month);
+                        Date->Year  = atoi(Date->Year);
 
 
                         if(isdatevalid(*Date))
@@ -156,7 +161,7 @@ void loadPlayer(FILE *data,char *Zeilenanfang)
         {
             int     Len;
             char    *TricotNr;
-            int     *intTricotNr;
+            int     intTricotNr;
 
             Len = strlen( Zeilenanfang +10  ) - 11;
 
@@ -166,26 +171,19 @@ void loadPlayer(FILE *data,char *Zeilenanfang)
                   if(TricotNr)
                   {
 
-                  strncpy( TricotNr, Zeilenanfang + 10, Len );
+                      strncpy( TricotNr, Zeilenanfang + 10, Len );
 
-                  intTricotNr = malloc(sizeof(int));
+                      intTricotNr = atoi(TricotNr);
 
-                    if(intTricotNr)
-                    {
+                      //(((Teams+TeamCounter)->Player)+anzPlayer)->Trikotn = calloc(Len+1,sizeof(int));
+                      (((Teams+TeamCounter)->Player)+anzPlayer)->Trikotn = intTricotNr;
 
-                    *intTricotNr = atoi(TricotNr);
-
-                    (((Teams+TeamCounter)->Player)+anzPlayer)->Trikotn = malloc(sizeof(int));
-                    (((Teams+TeamCounter)->Player)+anzPlayer)->Trikotn = *intTricotNr;
-
-                    printf("    ");//leerzeichen für Player
-                    printf("TricotNr: %i\n",*intTricotNr);
+                      printf("    ");//leerzeichen für Player
+                      printf("TricotNr: %i\n",intTricotNr);
 
 
-                    free(TricotNr);
-                    free(intTricotNr);                                                //für test!!
+                      free(TricotNr);
 
-                    }
                   }
             }
         }
@@ -195,7 +193,7 @@ void loadPlayer(FILE *data,char *Zeilenanfang)
 
             int     Len;
             char    *Goals;
-            int     *intGoals;
+            int     intGoals;
 
             Len = strlen( Zeilenanfang +7  ) - 8;
 
@@ -206,23 +204,18 @@ void loadPlayer(FILE *data,char *Zeilenanfang)
 
                 if ( Goals )
                 {
-                     strncpy( Goals, Zeilenanfang + 7, Len );
+                    strncpy( Goals, Zeilenanfang + 7, Len );
 
-                      intGoals  = malloc(sizeof(int));
-                      {
-                            *intGoals = atoi(Goals);
+                    intGoals = atoi(Goals);
 
-                            (((Teams+TeamCounter)->Player)+anzPlayer)->Goals = malloc(sizeof(int));
-                            (((Teams+TeamCounter)->Player)+anzPlayer)->Goals = *intGoals;
+                    //(((Teams+TeamCounter)->Player)+anzPlayer)->Goals = calloc(Len +1 ,sizeof(int));
+                    (((Teams+TeamCounter)->Player)+anzPlayer)->Goals = intGoals;
 
-                            printf("    ");//leerzeichen für Player
-                            printf("Goals: %i\n",(((Teams+TeamCounter)->Player)+anzPlayer)->Goals);
+                    printf("    ");//leerzeichen für Player
+                    printf("Goals: %i\n",(((Teams+TeamCounter)->Player)+anzPlayer)->Goals);
 
 
-                            free(Goals);
-                            free(intGoals);
-                      }
-
+                    free(Goals);
                 }
             }
         }
@@ -272,12 +265,6 @@ void loadTeam(FILE *data,char *Zeilenanfang)
         if(strncmp(Zeilenanfang,"<Player>",8)==0)
         {
             loadPlayer(data,Zeilenanfang);
-
-            if(strncmp(Zeilenanfang,"</Player>",6)==1)
-            {
-                printf("ende player nicht mit </Player> ");
-                return;
-            }
         }
 
         if(strncmp(Zeilenanfang,"<Name>",6)==0)
@@ -370,7 +357,7 @@ void load(FILE *data)
 
         if(  strncmp(Zeilenanfang , "<Team>" , 6) == 0 )
         {
-           loadTeam(data,Zeilenanfang);
+            loadTeam(data,Zeilenanfang);
         }
 
         if ( feof( data ) )
@@ -389,8 +376,9 @@ void load(FILE *data)
     }while(strncmp(Zeilenanfang,"</Data>",7)!=0);
 }
 //------------------------------SavePlayer
-savePlayer(FILE *data, int TC , int PC)
+void savePlayer(FILE *data, int TC , int PC)
 {
+
     fputs("    ",data);
     fputs("<Player>\n",data);
 
@@ -399,7 +387,8 @@ savePlayer(FILE *data, int TC , int PC)
     fputs( (((Teams+TC)->Player)+PC)->Playern ,data);
     fputs("</Name>",data);
     fputs("\n",data);
-    free( (((Teams+TC)->Player)+PC)->Playern);
+
+    //free( &(((Teams+TC)->Player)+PC)->Playern);
 
 
     char tag[5];
@@ -420,7 +409,7 @@ savePlayer(FILE *data, int TC , int PC)
     fputs("</Birthday>",data);
     fputs("\n",data);
 
-    free((((Teams+TC)->Player)+PC)->Birthday);
+    //free(&(((Teams+TC)->Player)+PC)->Birthday);
 
 
     char TNr[5];                                            //Trikonummer
@@ -431,8 +420,7 @@ savePlayer(FILE *data, int TC , int PC)
     fputs("</TricotNr>",data);
     fputs("\n",data);
 
-    free( (((Teams+TC)->Player)+PC)->Trikotn );
-
+    //free( &(((Teams+TC)->Player)+PC)->Trikotn );
 
     char Goals[5];                                           //Goals
     itoa ( (((Teams+TC)->Player)+PC)->Goals , Goals , 10);
@@ -442,8 +430,7 @@ savePlayer(FILE *data, int TC , int PC)
     fputs("</Goals>",data);
     fputs("\n",data);
 
-    free( (((Teams+TC)->Player)+PC)->Goals );
-
+    //free( &(((Teams+TC)->Player)+PC)->Goals );
 
     fputs("    ",data);
     fputs("</Player>\n",data);
@@ -451,7 +438,7 @@ savePlayer(FILE *data, int TC , int PC)
 
 //------------------------------SaveTeam
 
-saveTeam(FILE *data,int TC)
+void saveTeam(FILE *data,int TC)
 {
     int i;
 
@@ -463,14 +450,14 @@ saveTeam(FILE *data,int TC)
     fputs( (Teams+TC)->Teamn ,data);
     fputs("</Name>",data);
     fputs("\n",data);
-    free( (Teams+TC)->Teamn );
+    //free( (Teams+TC)->Teamn );
 
     fputs("  ",data);         //Spielername
     fputs("<Trainer>",data);
     fputs( (Teams+TC)->Coach ,data);
     fputs("</Trainer>",data);
     fputs("\n",data);
-    free( (Teams+TC)->Coach );
+    //free( (Teams+TC)->Coach );
 
     int anzPlayer = (Teams+TC)->AnzPlayer;
 
@@ -481,6 +468,8 @@ saveTeam(FILE *data,int TC)
 
     fputs("  ",data);
     fputs("</Team>\n",data);
+
+    return;
 }
 
 
