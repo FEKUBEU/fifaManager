@@ -37,9 +37,27 @@ typedef struct {       //Struct zur speicherung der Menunamen
    char MTitel[50];
  }TMTitel;
 
-int TeamCounter;     //Aufruf von globalen variabeln,
+int TeamCounter;                    //Aufruf von globalen variabeln,
 TTeam Teams[MAXTEAM];             //die in Team.c deklariert wurden
 
+// doppelt verkettete liste //
+/*
+typedef struct
+{
+    char    *Teamn;
+    char    *Coach;
+    int     AnzPlayer;
+    TPlayer Player[MAXPLAYER];
 
+    int Index;
+
+    struct TeamList *Next;
+    struct TeamList *Prev;
+
+}TeamList;
+
+TeamList *FirstTeam;
+TeamList *LastTeam;
+*/
 
 #endif // DATASTRUCT_H_INCLUDED
